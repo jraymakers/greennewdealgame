@@ -40,13 +40,13 @@ module.exports = () => ({
   lint: {
     action: jr.scriptAction(tslintPath, ['src/**/*.tsx'], { cwd: __dirname })
   },
-  // publish: {
-  //   action: jr.processAction('gsutil', ['cp', '-r', 'out/**', 'gs://www.hereslookingateuclid.com'], { cwd: __dirname })
-  // },
-  // publishBundle: {
-  //   action: jr.processAction('gsutil', ['cp', 'out/bundle.js', 'gs://www.hereslookingateuclid.com/bundle.js'],
-  //     { cwd: __dirname })
-  // },
+  publish: {
+    action: jr.processAction('gsutil', ['cp', '-r', 'out/**', 'gs://www.jraymakers.com/greennewdealgame'], { cwd: __dirname })
+  },
+  publishBundle: {
+    action: jr.processAction('gsutil', ['cp', 'out/bundle.js', 'gs://www.jraymakers.com/greennewdealgame/bundle.js'],
+      { cwd: __dirname })
+  },
   serve: {
     action: jr.scriptAction(httpServerPath, ['./out', '-o'], { cwd: __dirname })
   },
