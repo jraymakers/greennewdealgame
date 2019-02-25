@@ -1,6 +1,7 @@
 const fse = require('fs-extra');
 const jr = require('jr');
 const path = require('path');
+const svg2img = require('svg2img');
 
 const httpServerPath = path.join('node_modules', '.bin', 'http-server');
 const tslintPath = path.join('node_modules', '.bin', 'tslint');
@@ -14,10 +15,10 @@ module.exports = () => ({
     needs: ['buildDev']
   },
   buildDev: {
-    needs: ['bundleDev', 'copy', 'lint']
+    needs: ['bundleDev', 'copyIndex', 'generateFavicon', 'lint']
   },
   buildProd: {
-    needs: ['bundleProd', 'copy', 'lint']
+    needs: ['bundleProd', 'copyIndex', 'generateFavicon', 'lint']
   },
   bundleDev: {
     action: jr.scriptAction(webpackPath, ['--hide-modules', '--mode', 'development'], { cwd: __dirname })
@@ -28,14 +29,17 @@ module.exports = () => ({
   clean: {
     action: () => fse.remove(outDir)
   },
-  copy: {
-    needs: [/*'copyFavicon', */'copyIndex']
-  },
-  // copyFavicon: {
-  //   action: () => fse.copy(path.join(srcDir, 'favicon', 'favicon.png'), path.join(outDir, 'favicon.png'))
-  // },
   copyIndex: {
     action: () => fse.copy(path.join(srcDir, 'entry', 'index.html'), path.join(outDir, 'index.html'))
+  },
+  generateFavicon: {
+    action: () => svg2img(path.join(srcDir, 'favicon', 'favicon.svg'), (error, buffer) => {
+      if (error) {
+        console.error(error);
+      } else {
+        fse.writeFileSync(path.join(outDir, 'favicon.png'), buffer);
+      }
+    })
   },
   lint: {
     action: jr.scriptAction(tslintPath, ['src/**/*.tsx'], { cwd: __dirname })
