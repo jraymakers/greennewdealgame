@@ -1,4 +1,5 @@
 import { Game } from '../types/Game';
+import { GameAction } from '../types/GameAction';
 
 export function createNewGame(): Game {
   return {
@@ -38,5 +39,19 @@ export function createNewGame(): Game {
       turn: 1,
     },
     worldHistory: {},
+  };
+}
+
+export function doGameTurn(game: Game, actions: ReadonlyArray<GameAction>): Game {
+  return {
+    ...game,
+    worldState: {
+      ...game.worldState,
+      turn: game.worldState.turn + 1,
+    },
+    worldHistory: {
+      ...game.worldHistory,
+      [game.worldState.turn]: game.worldState,
+    },
   };
 }

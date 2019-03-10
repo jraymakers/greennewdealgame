@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { GameView } from '../../game/components/GameView';
-import { createNewGame } from '../../game/functions/GameFunctions';
+import { createNewGame, doGameTurn } from '../../game/functions/GameFunctions';
 import { Game } from '../../game/types/Game';
+import { GameAction } from '../../game/types/GameAction';
 import { cssClass } from '../../style';
 
 const classPrefix = 'App';
@@ -36,7 +37,7 @@ export class App extends React.Component<{}, AppState> {
   private renderGameOrNewGame(): React.ReactNode {
     if (this.state.game) {
       return (
-        <GameView game={this.state.game} />
+        <GameView game={this.state.game} nextTurn={this.nextTurn} endGame={this.endGame} />
       );
     } else {
       return (
@@ -48,6 +49,22 @@ export class App extends React.Component<{}, AppState> {
   private readonly onNewGameButtonClick = () => {
     this.setState({
       game: createNewGame(),
+    });
+  }
+
+  private readonly nextTurn = (actions: ReadonlyArray<GameAction>) => {
+    if (this.state.game) {
+      this.setState({
+        game: doGameTurn(this.state.game, actions),
+      });
+    } else {
+      console.warn(`nextTurn called but this.state.game is null`);
+    }
+  }
+
+  private readonly endGame = () => {
+    this.setState({
+      game: null,
     });
   }
 

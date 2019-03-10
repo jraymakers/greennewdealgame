@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cssClass } from '../../style';
 import { emissionSourceEmissions, emissionSourcesEmissions } from '../functions/EmissionFunctions';
 import { Game } from '../types/Game';
+import { GameAction } from '../types/GameAction';
 
 const classPrefix = 'GameView';
 
@@ -11,6 +12,8 @@ const sectionClass = cssClass(classPrefix, 'section', {
 
 export type GameViewProps = {
   readonly game: Game;
+  readonly nextTurn: (actions: ReadonlyArray<GameAction>) => void;
+  readonly endGame: () => void;
 };
 
 export class GameView extends React.Component<GameViewProps> {
@@ -24,6 +27,7 @@ export class GameView extends React.Component<GameViewProps> {
         {this.renderFunds()}
         {this.renderActivePolicies()}
         {this.renderAvailablePolicies()}
+        <button onClick={this.props.endGame}>End Game</button>
       </div>
     );
   }
@@ -33,7 +37,7 @@ export class GameView extends React.Component<GameViewProps> {
       <div className={sectionClass}>
         <span>Turn: </span>
         <span>{this.props.game.worldState.turn}</span>
-        <button>Next Turn</button>
+        <button onClick={this.onNextTurnClick}>Next Turn</button>
       </div>
     );
   }
@@ -104,6 +108,10 @@ export class GameView extends React.Component<GameViewProps> {
           : 'none'}
       </div>
     );
+  }
+
+  private readonly onNextTurnClick = () => {
+    this.props.nextTurn([]);
   }
 
 }
