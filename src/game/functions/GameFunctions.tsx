@@ -3,7 +3,7 @@ import { GameAction } from '../types/GameAction';
 
 export function createNewGame(): Game {
   return {
-    worldState: {
+    world: {
       activePolicies: [],
       availablePolicies: [
         { name: 'Cap and Trade' },
@@ -38,20 +38,20 @@ export function createNewGame(): Game {
       funds: 1000,
       turn: 1,
     },
-    worldHistory: {},
+    history: {},
   };
 }
 
 export function doGameTurn(game: Game, actions: ReadonlyArray<GameAction>): Game {
   return {
     ...game,
-    worldState: {
-      ...game.worldState,
-      turn: game.worldState.turn + 1,
+    world: {
+      ...game.world,
+      turn: game.world.turn + 1,
     },
-    worldHistory: {
-      ...game.worldHistory,
-      [game.worldState.turn]: game.worldState,
+    history: {
+      ...game.history,
+      [game.world.turn]: game.world,
     },
   };
 }

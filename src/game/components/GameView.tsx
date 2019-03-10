@@ -36,7 +36,7 @@ export class GameView extends React.Component<GameViewProps> {
     return (
       <div className={sectionClass}>
         <span>Turn: </span>
-        <span>{this.props.game.worldState.turn}</span>
+        <span>{this.props.game.world.turn}</span>
         <button onClick={this.onNextTurnClick}>Next Turn</button>
       </div>
     );
@@ -47,7 +47,7 @@ export class GameView extends React.Component<GameViewProps> {
       <div className={sectionClass}>
         <span>Total Emissions: </span>
         <span>
-          {emissionSourcesEmissions(this.props.game.worldState.emissionSources).toFixed(0)}
+          {emissionSourcesEmissions(this.props.game.world.emissionSources).toFixed(0)}
         </span>
       </div>
     );
@@ -58,7 +58,7 @@ export class GameView extends React.Component<GameViewProps> {
       <div className={sectionClass}>
         <div>Emissions Sources:</div>
         <div>
-          {this.props.game.worldState.emissionSources.map((source) => (
+          {this.props.game.world.emissionSources.map((source) => (
             <div key={source.name}>{`${source.name}: ${emissionSourceEmissions(source).toFixed(0)}`}</div>
           ))}
         </div>
@@ -70,13 +70,13 @@ export class GameView extends React.Component<GameViewProps> {
     return (
       <div className={sectionClass}>
         <span>Funds: </span>
-        <span>{this.props.game.worldState.funds}</span>
+        <span>{this.props.game.world.funds}</span>
       </div>
     );
   }
 
   private renderActivePolicies(): React.ReactNode {
-    const activePolicies = this.props.game.worldState.activePolicies;
+    const activePolicies = this.props.game.world.activePolicies;
     return (
       <div className={sectionClass}>
         <div>Active Policies:</div>
@@ -92,7 +92,7 @@ export class GameView extends React.Component<GameViewProps> {
   }
 
   private renderAvailablePolicies(): React.ReactNode {
-    const availablePolicies = this.props.game.worldState.availablePolicies;
+    const availablePolicies = this.props.game.world.availablePolicies;
     return (
       <div className={sectionClass}>
         <div>Available Policies:</div>

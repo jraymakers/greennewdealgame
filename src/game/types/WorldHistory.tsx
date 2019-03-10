@@ -1,5 +1,5 @@
-import { WorldState } from './WorldState';
+import { World } from './World';
 
 export type WorldHistory = {
-  readonly [turn: number]: WorldState;
+  readonly [turn: number]: World;
 };
