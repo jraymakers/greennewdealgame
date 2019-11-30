@@ -1,3 +1,3 @@
-export type AvailablePolicy = {
-  readonly name: string;
-};
+export type AvailablePolicy = Readonly<{
+  name: string;
+}>;

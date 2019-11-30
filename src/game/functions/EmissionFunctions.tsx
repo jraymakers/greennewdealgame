@@ -4,7 +4,7 @@ function sum(a: number, b: number) {
   return a + b;
 }
 
-export function emissionSourcesEmissions(emissionSources: ReadonlyArray<EmissionSource>): number {
+export function emissionSourcesEmissions(emissionSources: readonly EmissionSource[]): number {
   return emissionSources.map(
     emissionSourceEmissions,
   ).reduce(sum);

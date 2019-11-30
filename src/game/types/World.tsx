@@ -2,10 +2,10 @@ import { ActivePolicy } from './ActivePolicy';
 import { AvailablePolicy } from './AvailablePolicy';
 import { EmissionSource } from './EmissionSource';
 
-export type World = {
-  readonly activePolicies: ReadonlyArray<ActivePolicy>;
-  readonly availablePolicies: ReadonlyArray<AvailablePolicy>;
-  readonly emissionSources: ReadonlyArray<EmissionSource>;
-  readonly funds: number;
-  readonly turn: number;
-};
+export type World = Readonly<{
+ activePolicies: readonly ActivePolicy[];
+ availablePolicies: readonly AvailablePolicy[];
+ emissionSources: readonly EmissionSource[];
+ funds: number;
+ turn: number;
+}>;

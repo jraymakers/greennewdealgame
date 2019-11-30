@@ -10,108 +10,114 @@ const sectionClass = cssClass(classPrefix, 'section', {
   padding: '6px',
 });
 
-export type GameViewProps = {
-  readonly game: Game;
-  readonly nextTurn: (actions: ReadonlyArray<GameAction>) => void;
-  readonly endGame: () => void;
+export const GameView: React.FC<Readonly<{
+  game: Game;
+  nextTurn: (actions: readonly GameAction[]) => void;
+  endGame: () => void;
+}>> = ({ game, nextTurn, endGame }) => {
+  return (
+    <div>
+      <GameTurnView game={game} nextTurn={nextTurn} />
+      <TotalEmissionsView game={game} />
+      <EmissionsSourcesView game={game} />
+      <FundsView game={game} />
+      <ActivePoliciesView game={game} />
+      <AvailablePoliciesView game={game} />
+      <button onClick={endGame}>End Game</button>
+    </div>
+  );
 };
 
-export class GameView extends React.Component<GameViewProps> {
+export const GameTurnView: React.FC<Readonly<{
+  game: Game,
+  nextTurn: (actions: readonly GameAction[]) => void,
+}>> = ({ game, nextTurn }) => {
+  const nextTurnButtonClicked = React.useCallback(() => {
+    nextTurn([]);
+  }, []);
+  return (
+    <div className={sectionClass}>
+      <span>Turn: </span>
+      <span>{game.world.turn}</span>
+      <button onClick={nextTurnButtonClicked}>Next Turn</button>
+    </div>
+  );
+};
 
-  public render(): JSX.Element {
-    return (
+export const TotalEmissionsView: React.FC<Readonly<{
+  game: Game,
+}>> = ({ game }) => {
+  return (
+    <div className={sectionClass}>
+      <span>Total Emissions: </span>
+      <span>
+        {emissionSourcesEmissions(game.world.emissionSources).toFixed(0)}
+      </span>
+    </div>
+  );
+};
+
+export const EmissionsSourcesView: React.FC<Readonly<{
+  game: Game,
+}>> = ({ game }) => {
+  return (
+    <div className={sectionClass}>
+      <div>Emissions Sources:</div>
       <div>
-        {this.renderTurn()}
-        {this.renderTotalEmissions()}
-        {this.renderEmissionsSources()}
-        {this.renderFunds()}
-        {this.renderActivePolicies()}
-        {this.renderAvailablePolicies()}
-        <button onClick={this.props.endGame}>End Game</button>
+        {game.world.emissionSources.map((source) => (
+          <div key={source.name}>{`${source.name}: ${emissionSourceEmissions(source).toFixed(0)}`}</div>
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
+};
 
-  private renderTurn(): React.ReactNode {
-    return (
-      <div className={sectionClass}>
-        <span>Turn: </span>
-        <span>{this.props.game.world.turn}</span>
-        <button onClick={this.onNextTurnClick}>Next Turn</button>
-      </div>
-    );
-  }
+export const FundsView: React.FC<Readonly<{
+  game: Game,
+}>> = ({ game }) => {
+  return (
+    <div className={sectionClass}>
+      <span>Funds: </span>
+      <span>{game.world.funds}</span>
+    </div>
+  );
+};
 
-  private renderTotalEmissions(): React.ReactNode {
-    return (
-      <div className={sectionClass}>
-        <span>Total Emissions: </span>
-        <span>
-          {emissionSourcesEmissions(this.props.game.world.emissionSources).toFixed(0)}
-        </span>
-      </div>
-    );
-  }
+export const ActivePoliciesView: React.FC<Readonly<{
+  game: Game,
+}>> = ({ game }) => {
+  const activePolicies = game.world.activePolicies;
+  return (
+    <div className={sectionClass}>
+      <div>Active Policies:</div>
+      {activePolicies.length > 0
+        ? <div>
+            {activePolicies.map((policy) => (
+              <div key={policy.name}>{`${policy.name}`}</div>
+            ))}
+          </div>
+        : 'none'}
+    </div>
+  );
+};
 
-  private renderEmissionsSources(): React.ReactNode {
-    return (
-      <div className={sectionClass}>
-        <div>Emissions Sources:</div>
-        <div>
-          {this.props.game.world.emissionSources.map((source) => (
-            <div key={source.name}>{`${source.name}: ${emissionSourceEmissions(source).toFixed(0)}`}</div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  private renderFunds(): React.ReactNode {
-    return (
-      <div className={sectionClass}>
-        <span>Funds: </span>
-        <span>{this.props.game.world.funds}</span>
-      </div>
-    );
-  }
-
-  private renderActivePolicies(): React.ReactNode {
-    const activePolicies = this.props.game.world.activePolicies;
-    return (
-      <div className={sectionClass}>
-        <div>Active Policies:</div>
-        {activePolicies.length > 0
-          ? <div>
-              {activePolicies.map((policy) => (
-                <div key={policy.name}>{`${policy.name}`}</div>
-              ))}
-            </div>
-          : 'none'}
-      </div>
-    );
-  }
-
-  private renderAvailablePolicies(): React.ReactNode {
-    const availablePolicies = this.props.game.world.availablePolicies;
-    return (
-      <div className={sectionClass}>
-        <div>Available Policies:</div>
-        {availablePolicies.length > 0
-          ? <div>
-              {availablePolicies.map((policy) => (
-                <div key={policy.name}>
-                  <span>{`${policy.name}`}</span>
-                  <button>Activate</button>
-                </div>
-              ))}
-            </div>
-          : 'none'}
-      </div>
-    );
-  }
-
-  private readonly onNextTurnClick = () => {
-    this.props.nextTurn([]);
-  }
-
-}
+export const AvailablePoliciesView: React.FC<Readonly<{
+  game: Game,
+}>> = ({ game }) => {
+  const availablePolicies = game.world.availablePolicies;
+  return (
+    <div className={sectionClass}>
+      <div>Available Policies:</div>
+      {availablePolicies.length > 0
+        ? <div>
+            {availablePolicies.map((policy) => (
+              <div key={policy.name}>
+                <span>{`${policy.name}`}</span>
+                <button>Activate</button>
+              </div>
+            ))}
+          </div>
+        : 'none'}
+    </div>
+  );
+};

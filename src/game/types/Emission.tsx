@@ -1,6 +1,6 @@
 import { GHGType } from './GHGType';
 
-export type Emission = {
-  readonly ghgType: GHGType;
-  readonly mmtCO2Eq: number;
-};
+export type Emission = Readonly<{
+  ghgType: GHGType;
+  mmtCO2Eq: number;
+}>;

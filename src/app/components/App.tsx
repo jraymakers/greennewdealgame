@@ -12,60 +12,32 @@ const titleClass = cssClass(classPrefix, 'title', {
   padding: '6px',
 });
 
-export type AppState = {
-  readonly game: Game | null;
-};
+export const App: React.FC = () => {
+  const [game, setGame] = React.useState<Game | null>(null);
 
-export class App extends React.Component<{}, AppState> {
+  const newGame = React.useCallback(() => {
+    setGame(createNewGame());
+  }, [setGame]);
 
-  public constructor(props: {}) {
-    super(props);
-    this.state = {
-      game: null,
-    };
-  }
-
-  public render(): JSX.Element {
-    return (
-      <div>
-        <div className={titleClass}>Green New Deal Game</div>
-        {this.renderGameOrNewGame()}
-      </div>
-    );
-  }
-
-  private renderGameOrNewGame(): React.ReactNode {
-    if (this.state.game) {
-      return (
-        <GameView game={this.state.game} nextTurn={this.nextTurn} endGame={this.endGame} />
-      );
-    } else {
-      return (
-        <button onClick={this.onNewGameButtonClick}>New Game</button>
-      );
-    }
-  }
-
-  private readonly onNewGameButtonClick = () => {
-    this.setState({
-      game: createNewGame(),
-    });
-  }
-
-  private readonly nextTurn = (actions: ReadonlyArray<GameAction>) => {
-    if (this.state.game) {
-      this.setState({
-        game: doGameTurn(this.state.game, actions),
-      });
+  const nextTurn = React.useCallback((actions: readonly GameAction[]) => {
+    if (game) {
+      setGame(doGameTurn(game, actions));
     } else {
       console.warn(`nextTurn called but this.state.game is null`);
     }
-  }
+  }, [game, setGame]);
 
-  private readonly endGame = () => {
-    this.setState({
-      game: null,
-    });
-  }
+  const endGame = React.useCallback(() => {
+    setGame(null);
+  }, [setGame]);
 
-}
+  return (
+    <div>
+      <div className={titleClass}>Green New Deal Game</div>
+      {game
+        ? <GameView game={game} nextTurn={nextTurn} endGame={endGame} />
+        : <button onClick={newGame}>New Game</button>
+      }
+    </div>
+  );
+};

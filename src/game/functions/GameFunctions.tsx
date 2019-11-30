@@ -42,7 +42,7 @@ export function createNewGame(): Game {
   };
 }
 
-export function doGameTurn(game: Game, actions: ReadonlyArray<GameAction>): Game {
+export function doGameTurn(game: Game, actions: readonly GameAction[]): Game {
   return {
     ...game,
     world: {
