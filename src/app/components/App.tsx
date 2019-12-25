@@ -23,7 +23,7 @@ export const App: React.FC = () => {
     if (game) {
       setGame(doGameTurn(game, actions));
     } else {
-      console.warn(`nextTurn called but this.state.game is null`);
+      console.warn(`nextTurn called but game is null`);
     }
   }, [game, setGame]);
 

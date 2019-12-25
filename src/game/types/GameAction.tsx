@@ -1,11 +1,11 @@
 export type ActivatePolicyGameAction = Readonly<{
   type: 'activatePolicy';
-  action: string;
+  policyName: string;
 }>;
 
 export type DeactivatePolicyGameAction = Readonly<{
   type: 'deactivatePolicy';
-  action: string;
+  policyName: string;
 }>;
 
 export type GameAction
