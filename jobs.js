@@ -3,8 +3,8 @@ const jr = require('jr');
 const path = require('path');
 const svg2img = require('svg2img');
 
+const eslintPath = path.join('node_modules', '.bin', 'eslint');
 const httpServerPath = path.join('node_modules', '.bin', 'http-server');
-const tslintPath = path.join('node_modules', '.bin', 'tslint');
 const webpackPath = path.join('node_modules', '.bin', 'webpack');
 
 const outDir = 'out';
@@ -42,7 +42,7 @@ module.exports = () => ({
     })
   },
   lint: {
-    action: jr.scriptAction(tslintPath, ['src/**/*.tsx'], { cwd: __dirname })
+    action: jr.scriptAction(eslintPath, ['src', '--ext', '.ts,.tsx'], { cwd: __dirname })
   },
   publish: {
     action: jr.processAction('gsutil', ['cp', '-r', 'out/**', 'gs://www.jraymakers.com/greennewdealgame'], { cwd: __dirname })

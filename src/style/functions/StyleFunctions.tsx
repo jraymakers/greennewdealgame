@@ -2,7 +2,7 @@ import { style } from 'typestyle';
 
 import { Style } from '../types/Style';
 
-function debugName(namespace: string, localName: string) {
+function debugName(namespace: string, localName: string): string {
   return `${namespace}_${localName}`;
 }
 

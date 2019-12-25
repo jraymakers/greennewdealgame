@@ -5,10 +5,8 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
+    "strict": true,
     "target": "es5"
   }
 }

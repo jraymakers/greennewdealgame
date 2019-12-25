@@ -29,12 +29,12 @@ export const GameView: React.FC<Readonly<{
 };
 
 export const GameTurnView: React.FC<Readonly<{
-  game: Game,
-  nextTurn: (actions: readonly GameAction[]) => void,
+  game: Game;
+  nextTurn: (actions: readonly GameAction[]) => void;
 }>> = ({ game, nextTurn }) => {
   const nextTurnButtonClicked = React.useCallback(() => {
     nextTurn([]);
-  }, []);
+  }, [nextTurn]);
   return (
     <div className={sectionClass}>
       <span>Turn: </span>
@@ -45,7 +45,7 @@ export const GameTurnView: React.FC<Readonly<{
 };
 
 export const TotalEmissionsView: React.FC<Readonly<{
-  game: Game,
+  game: Game;
 }>> = ({ game }) => {
   return (
     <div className={sectionClass}>
@@ -58,7 +58,7 @@ export const TotalEmissionsView: React.FC<Readonly<{
 };
 
 export const EmissionsSourcesView: React.FC<Readonly<{
-  game: Game,
+  game: Game;
 }>> = ({ game }) => {
   return (
     <div className={sectionClass}>
@@ -73,7 +73,7 @@ export const EmissionsSourcesView: React.FC<Readonly<{
 };
 
 export const FundsView: React.FC<Readonly<{
-  game: Game,
+  game: Game;
 }>> = ({ game }) => {
   return (
     <div className={sectionClass}>
@@ -84,7 +84,7 @@ export const FundsView: React.FC<Readonly<{
 };
 
 export const ActivePoliciesView: React.FC<Readonly<{
-  game: Game,
+  game: Game;
 }>> = ({ game }) => {
   const activePolicies = game.world.activePolicies;
   return (
@@ -102,7 +102,7 @@ export const ActivePoliciesView: React.FC<Readonly<{
 };
 
 export const AvailablePoliciesView: React.FC<Readonly<{
-  game: Game,
+  game: Game;
 }>> = ({ game }) => {
   const availablePolicies = game.world.availablePolicies;
   return (
